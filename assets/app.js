@@ -267,6 +267,17 @@ function renderNav() {
   else if (S.route === 'sport') cur = S.routeParam;
   $$('.rail button').forEach(b => b.classList.toggle('on', b.dataset.nav === cur));
   $$('.botnav button').forEach(b => b.classList.toggle('on', b.dataset.nav === cur));
+
+  /* Keep the Live row in step with the fixtures. The lab can switch every
+     match off to show the "nothing live" state, and a row still reading
+     "14" beside a page saying nothing is live would contradict it. */
+  const liveBtn = $('.rail button[data-nav="live"]');
+  if (liveBtn) {
+    const n = S.noLive ? 0 : HB.matches.filter(m => m.state === 'live').length;
+    const badge = liveBtn.querySelector('.n');
+    if (badge) badge.textContent = n;
+    liveBtn.classList.toggle('is-live', n > 0);
+  }
 }
 
 /* ---------------- top bar (static) ---------------- */
@@ -316,8 +327,14 @@ function tabsHTML() {
       const on = (s.id === 'home' && S.route === 'home') || (s.id === 'live' && S.route === 'live')
               || (s.id === 'soccer' && S.route === 'football')
               || (S.route === 'sport' && S.routeParam === s.id);
-      return `<button class="tab ${on ? 'on' : ''}" data-tab="${s.id}">`
-           + `<span class="tico">${sportIcon(s.id)}${s.count ? `<span class="n">${s.count}</span>` : ''}</span>`
+      /* Live is the one tab that is a state and not just a page. It only
+         lights up when something is actually in play — the lab can empty
+         the live list, and a glowing Live tab over an empty page would
+         contradict the state the entry is being judged on. */
+      const lit = s.id === 'live' && !S.noLive && HB.matches.some(m => m.state === 'live');
+      const n = s.id === 'live' && S.noLive ? 0 : s.count;
+      return `<button class="tab ${on ? 'on' : ''}${lit ? ' is-live' : ''}" data-tab="${s.id}">`
+           + `<span class="tico">${sportIcon(s.id)}${n ? `<span class="n">${n}</span>` : ''}</span>`
            + `<span class="tlab">${esc(s.short || s.label)}</span></button>`;
     }).join('')}
   </div>`;
@@ -474,16 +491,17 @@ function rowHTML(m) {
 
 
 /* ---------------- highlights rail ----------------
-   The old "Featured matches" strip showed four football fixtures and
-   nothing else. Highlights widens it on purpose: seven fixtures,
-   fourteen clubs, five sports, so the rail reads as a cross-sport pick
-   rather than four rows of the same competition.
+   All football, on purpose. The brief never asks for a tennis or a
+   basketball page — Football is its own scored page and the Match page
+   example is Arsenal v Brighton — so the rail puts its seven slots
+   behind the five competitions that page is judged on: Premier League,
+   Champions League, LaLiga, Serie A and Bundesliga.
 
-   The order is hand-set, not sorted: the brief's example match leads,
-   then one live fixture from each other sport in play, then the two
-   biggest fixtures still to come.
+   The order is hand-set: the brief's example match leads, then one
+   live fixture from each of the other four competitions, then the two
+   biggest matches still to come.
 ---------------------------------------------------- */
-const HL_IDS = ['ars-bha', 'lal-gsw', 'nyy-lad', 'kcc-nwe', 'djo-ala', 'liv-mun', 'rma-juv'];
+const HL_IDS = ['ars-bha', 'che-int', 'atm-sev', 'nap-mil', 'bay-bvb', 'liv-mun', 'rma-juv'];
 
 function highlightMatches() {
   return HL_IDS.map(id => HB.matches.find(m => m.id === id)).filter(Boolean);
@@ -520,12 +538,12 @@ function hlcardHTML(m) {
 function highlightsHTML(list) {
   if (!list.length) return '';
   const comps = new Set(list.map(m => m.comp)).size;
-  const sports = new Set(list.map(m => (HB.comps.find(c => c.id === m.comp) || {}).sport)).size;
+  const liveN = list.filter(m => m.state === 'live').length;
   return `
   <section class="sect hlsect" style="padding-top:16px">
     <div class="secthead">
       <h2>Highlights</h2>
-      <span class="cnt">${list.length} fixtures · ${sports} sports · ${comps} competitions</span>
+      <span class="cnt">${list.length} fixtures · ${comps} competitions${liveN ? ' · ' + liveN + ' live' : ''}</span>
       <span class="hlhint">swipe ${I.chevR}</span>
       <span class="hlnav">
         <button class="hlar" data-hl="prev" aria-label="Previous highlight">‹</button>
@@ -1752,10 +1770,13 @@ function shimmerLogo(svg){
    Favourites / Active Bets / Settled, dan Logout di bawah.
 ------------------------------------------------ */
 function railHTML() {
-  const liveN = HB.matches.filter(m => m.live).length;
+  /* m.live was never a field on a fixture — the state lives in m.state —
+     so this count was always 0 and the Live row never showed one. */
+  const liveN = HB.matches.filter(m => m.state === 'live').length;
   const row = (nav, ico, lab, n) =>
-    `<button data-nav="${nav}">${ico}<span class="rname">${lab}</span>` +
-    (n ? `<span class="n">${n}</span>` : '') + `</button>`;
+    `<button data-nav="${nav}"${nav === 'live' ? ' class="is-live"' : ''}>${ico}<span class="rname">${lab}</span>` +
+    (n ? `<span class="n">${n}</span>` : '') +
+    (nav === 'live' ? `<i class="ldot"></i>` : '') + `</button>`;
 
   const olahraga = HB.sports.filter(s => !['home', 'live'].includes(s.id));
 

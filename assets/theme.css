@@ -142,6 +142,61 @@ button.primary,
   background:var(--sport-on-bg) !important;
   box-shadow:inset 2px 0 0 var(--sport-on-bar) !important;
 }
+
+/* ---- the Live entry is lit -----------------------------------------
+   Live is the one nav item that reports a state rather than naming a
+   page, so it carries a lit dot and a soft red halo. It appears in two
+   places, because the left column is hidden below 980px and the tab
+   strip takes over as the nav — both are styled here so the glow
+   follows the player from desktop to phone.
+
+   Red keeps its usual job here: it is the colour of every LIVE badge
+   in the app, so the nav now reads as the same signal as the rows.
+------------------------------------------------------------------- */
+.rail button.is-live{
+  color:#FFDCE2 !important;
+  background:linear-gradient(90deg, rgba(255,77,106,.20), rgba(255,77,106,.05)) !important;
+  box-shadow:inset 0 0 0 1px rgba(255,77,106,.30), 0 0 14px rgba(255,77,106,.16) !important;
+}
+.rail button.is-live.on{
+  color:#FFFFFF !important;
+  background:linear-gradient(90deg, rgba(255,77,106,.30), rgba(127,209,168,.12)) !important;
+  box-shadow:inset 2px 0 0 var(--live), 0 0 18px rgba(255,77,106,.32) !important;
+}
+.rail button.is-live .n{
+  background:rgba(255,77,106,.24) !important;
+  color:#FFDCE2 !important;
+}
+
+/* the dot itself — one rule, two homes */
+.rail button .ldot,
+.tab.is-live::after{
+  width:7px; height:7px; border-radius:99px; background:var(--live);
+  box-shadow:0 0 0 3px rgba(255,77,106,.18), 0 0 10px rgba(255,77,106,.85);
+  animation:ldotPulse 1.6s ease-in-out infinite;
+}
+.rail button .ldot{ flex:0 0 auto; order:1; margin-left:7px; }
+.rail button .n{ order:2; }
+.tab.is-live::after{ content:""; position:absolute; top:7px; right:7px; }
+
+@keyframes ldotPulse{
+  0%,100%{ opacity:1;   box-shadow:0 0 0 3px rgba(255,77,106,.20), 0 0 10px rgba(255,77,106,.85); }
+  50%    { opacity:.45; box-shadow:0 0 0 5px rgba(255,77,106,.05), 0 0  6px rgba(255,77,106,.40); }
+}
+/* the glow is information, the pulse is decoration — keep the first */
+@media (prefers-reduced-motion:reduce){
+  .rail button .ldot,
+  .tab.is-live::after{ animation:none; }
+}
+
+.tab.is-live{
+  border-color:rgba(255,77,106,.45) !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.12) inset, 0 0 16px rgba(255,77,106,.26) !important;
+}
+.tab.is-live.on{
+  border-color:var(--live) !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.14) inset, 0 0 20px rgba(255,77,106,.42) !important;
+}
 /* the section headings and count badges inside the sports column */
 .rail .rhead{ color:var(--sport-head) !important; }
 .rail button .n{
