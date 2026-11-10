@@ -52,6 +52,25 @@
   --down:      #FF8794;
   --gold:      #F7C860;
 
+  /* ---- the sports column ---------------------------------------------
+     Its own soft-green panel, so the sports nav reads as a place of its
+     own inside the shell instead of another navy slab. Every value is a
+     variable, so a palette change only has to restate these ten.
+  ------------------------------------------------------------------- */
+  --sport-bg:      var(--bar);
+  --sport-edge:    var(--hair);
+  --sport-ink:     var(--ink-3);
+  --sport-head:    var(--ink-4);
+  --sport-hover:   rgba(255,255,255,.05);
+  --sport-n-bg:    rgba(255,255,255,.07);
+  --sport-n-ink:   #9A9DA6;
+  --sport-on-bg:   rgba(62,208,218,.13);
+  --sport-on-bar:  var(--aqua);
+  --sport-on-ink:  #FFFFFF;
+  --sport-on-n-bg: rgba(62,208,218,.20);
+  --sport-on-n-ink:#8FE3EA;
+  --sport-thumb:   #2E3038;
+
   /* metrics */
   --r-sm: 6px;
   --r:    10px;
@@ -141,16 +160,16 @@ a{ color:inherit; text-decoration:none; }
    terbacanya setara dengan buku olahraga desktop pada umumnya.       */
 .rail{
   width:var(--rail-w); flex:0 0 var(--rail-w);
-  background:var(--bar); border:1px solid var(--hair);
+  background:var(--sport-bg); border:1px solid var(--sport-edge);
   display:flex; flex-direction:column; gap:2px;
   padding:10px 8px; border-radius:14px; overflow-y:auto; overflow-x:hidden;
 }
 .rail::-webkit-scrollbar{ width:8px; }
-.rail::-webkit-scrollbar-thumb{ background:#2E3038; border-radius:99px; }
+.rail::-webkit-scrollbar-thumb{ background:var(--sport-thumb); border-radius:99px; }
 .rail button{
   width:100%; padding:8px 9px; border-radius:9px;
   display:flex; align-items:center; gap:10px; text-align:left;
-  color:var(--ink-3); font-size:13px; font-weight:500; letter-spacing:.01em;
+  color:var(--sport-ink); font-size:13px; font-weight:500; letter-spacing:.01em;
   transition:background .14s ease, color .14s ease;
 }
 .rail button > svg,
@@ -158,22 +177,23 @@ a{ color:inherit; text-decoration:none; }
 .rail button .rname{ flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .rail button .n{
   flex:0 0 auto; min-width:20px; padding:1px 6px; border-radius:99px;
-  background:rgba(255,255,255,.07);
-  /* --ink-4 measured 4.07:1 on this badge — below AA. This grey is 4.9:1. */
-  color:#9A9DA6;
+  background:var(--sport-n-bg);
+  /* --ink-4 measured 4.07:1 on this badge — below AA. This grey is 4.9:1,
+     and the green restatement of it is checked against the same 4.5:1. */
+  color:var(--sport-n-ink);
   font-size:10.5px; font-weight:600; text-align:center;
 }
-.rail button:hover{ color:var(--ink); background:rgba(255,255,255,.05); }
-.rail button.on{ color:#FFFFFF; background:rgba(62,208,218,.13); box-shadow:inset 2px 0 0 var(--aqua); }
+.rail button:hover{ color:var(--sport-on-ink); background:var(--sport-hover); }
+.rail button.on{ color:var(--sport-on-ink); background:var(--sport-on-bg); box-shadow:inset 2px 0 0 var(--sport-on-bar); }
 .rail button.on .n{
-  background:rgba(62,208,218,.20);
-  /* --aqua measured 4.49:1 on this tinted badge; this cyan is 5.7:1. */
-  color:#8FE3EA;
+  background:var(--sport-on-n-bg);
+  /* --aqua measured 4.49:1 on this tinted badge; this ink is 5.7:1 or better. */
+  color:var(--sport-on-n-ink);
 }
-.rail .rsep{ flex:0 0 auto; height:1px; margin:7px 4px; background:var(--hair); }
+.rail .rsep{ flex:0 0 auto; height:1px; margin:7px 4px; background:var(--sport-edge); }
 .rail .rhead{
   flex:0 0 auto; padding:6px 9px 4px;
-  color:var(--ink-4); font-size:10.5px; font-weight:700;
+  color:var(--sport-head); font-size:10.5px; font-weight:700;
   letter-spacing:.09em; text-transform:uppercase;
 }
 .rail .rfoot{ margin-top:auto; padding-top:8px; }

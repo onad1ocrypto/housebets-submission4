@@ -52,6 +52,26 @@
   --down:      #FF8794;
   --gold:      #F7C860;
 
+  /* ---- the sports column: soft green --------------------------------
+     A muted sage, deliberately desaturated so it sits next to the navy
+     without competing with the gold prices. The panel is a deep green,
+     the active row a lighter tint of the same hue, and the 2px bar on
+     the active row is the brightest green in the shell.
+  ------------------------------------------------------------------- */
+  --sport-bg:      #16402F;
+  --sport-edge:    rgba(127,209,168,.26);
+  --sport-ink:     #A8CBBA;
+  --sport-head:    #8AB39F;   /* 4.99:1 on the panel — AA for 10.5px bold */
+  --sport-hover:   rgba(127,209,168,.10);
+  --sport-n-bg:    rgba(127,209,168,.14);
+  --sport-n-ink:   #C3E2D2;
+  --sport-on-bg:   rgba(127,209,168,.18);
+  --sport-on-bar:  #7FD1A8;
+  --sport-on-ink:  #EDF8F2;
+  --sport-on-n-bg: rgba(127,209,168,.30);
+  --sport-on-n-ink:#E8F7EF;
+  --sport-thumb:   #2E6B52;
+
   --r-sm: 6px;
   --r:    10px;
   --r-lg: 14px;
@@ -115,11 +135,22 @@ button.primary,
   border-color:rgba(247,200,96,.45) !important;
 }
 
-/* L167 — active rail item */
+/* L167 — active rail item. It followed the gold accent until the sports
+   column was given its own soft-green palette; it now follows that. */
 .rail button.on{
-  color:#FFEEC2 !important;
-  background:rgba(247,200,96,.14) !important;
-  box-shadow:inset 2px 0 0 var(--aqua) !important;
+  color:var(--sport-on-ink) !important;
+  background:var(--sport-on-bg) !important;
+  box-shadow:inset 2px 0 0 var(--sport-on-bar) !important;
+}
+/* the section headings and count badges inside the sports column */
+.rail .rhead{ color:var(--sport-head) !important; }
+.rail button .n{
+  background:var(--sport-n-bg) !important;
+  color:var(--sport-n-ink) !important;
+}
+.rail button.on .n{
+  background:var(--sport-on-n-bg) !important;
+  color:var(--sport-on-n-ink) !important;
 }
 
 /* L303 / L818 / L900 — dropdowns, popovers, modals */

@@ -401,6 +401,7 @@ function pageHome() {
   ${tabsHTML()}
   <div class="tabsrule"></div>
   ${heroHTML(hero)}
+  ${highlightsHTML(hl)}
   <section class="sect" style="padding-top:13px">
     <div class="secthead"><h2>Top competitions</h2><button class="more" data-go="football">View all ${I.chevR}</button></div>
   </section>
@@ -438,8 +439,6 @@ function pageHome() {
     <div class="mhead"><span style="flex:0 0 74px">Kick off</span><span style="flex:1 1 auto">Fixture</span><span style="flex:0 0 268px">Match result</span><span style="width:56px"></span></div>
     ${your.map(m => rowHTML(m)).join('')}
   </div>
-
-  ${highlightsHTML(hl)}
 
   <section class="sect" style="padding-top:12px">
     <div class="secthead"><h2>Starting soon</h2><span class="cnt">${soon.length + pre.length}</span></div>
